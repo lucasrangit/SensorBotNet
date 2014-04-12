@@ -115,7 +115,7 @@ class MainHandler(webapp2.RequestHandler):
     except:
       device = None
       status_list = db.Query(Status).order("-created").fetch(limit=10)
-      subscriber_list = []
+      subscriber_list = list()
 
     template = template_env.get_template('home.html')
     context = {
