@@ -27,7 +27,7 @@ class SubscribePage(webapp2.RequestHandler):
     if not device:  
       self.response.out.write('<p>Device does not exist</p>')
       return
-      
+
     email = self.request.get('email')
     subscriber = Subscriber(device=device, email=email)
     subscriber.trigger_state = "Ready"

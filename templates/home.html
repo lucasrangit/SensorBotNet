@@ -2,7 +2,7 @@
 {% block title %}{% if device %}#{{ device.key().name() }}{% endif %}{% endblock %}
 {% block header %}
   {% if device %}
-    <h1>StatusBot #{{ device.key().name() }} is {{ device.state }}</h1>
+    <h1>StatusBot #{{ device.key().name() }} is {{ device.state }} since {{ device.updated.strftime('%H:%M:%S') }}</h1>
   {% else %}
     <h1>StatusBots Updates</h1>
   {% endif %}
@@ -48,7 +48,8 @@
       </label>
       <input name="device_id" id="device_id" type="text" size="1" value="{% if device %}{{ device.key().name() }}{% endif %}" />
       <label for="email">
-        state is "Ready", email a <b>one-time</b> notification to: 
+        state is "Ready", <br />
+        email a <b>one-time</b> notification to:<br />
       </label>
       <input name="email" id="email" type="text" size="" value="" />
       <input type="submit" />

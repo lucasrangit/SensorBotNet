@@ -3,6 +3,7 @@ from google.appengine.ext import db
 # Device ID is stored as the key_name
 class Device(db.Model):
   created = db.DateTimeProperty(auto_now_add=True)
+  updated = db.DateTimeProperty(auto_now=True)
   uptime = db.IntegerProperty()
   state = db.StringProperty()
 
