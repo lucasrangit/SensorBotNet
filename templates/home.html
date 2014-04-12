@@ -24,7 +24,7 @@
     <tr>
         <td>{{ status.created.strftime('%H:%M:%S') }}</td>
         {% if not device %}
-          <td>{{ status.device.key().name() }}</td>
+          <td><a href="/{{ status.device.key().name() }}">{{ status.device.key().name() }}</a></td>
           <td>{{ status.device.state }}</td>
         {% endif %}
         <td>{{ status.digital1 }}</td>
