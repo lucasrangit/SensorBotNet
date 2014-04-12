@@ -33,7 +33,7 @@
     </tr>
   {% endfor %}
   </table>
-  {% if subscriber_list > 0 %}
+  {% if subscriber_list.count(1) > 0 %}
     <p>Subscriber list:</p>
     <ul>
     {% for subscriber in subscriber_list %}
