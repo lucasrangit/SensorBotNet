@@ -58,7 +58,7 @@ class UpdateHandler(webapp2.RequestHandler):
 
       # update state
       current_state = device.state
-      if current_state == "Unknown":
+      if current_state == "Unknown" or current_state == "Available":
         if analog1 < 5.0:
           device.state = "Busy"
 
@@ -116,7 +116,7 @@ class MainHandler(webapp2.RequestHandler):
       device = None
       status_list = db.Query(Status).order("-created").fetch(limit=10)
       subscriber_list = []
- 
+
     template = template_env.get_template('home.html')
     context = {
       'device' : device,
