@@ -51,3 +51,8 @@ indexes:
   - name: name
   - name: created
     direction: desc
+
+- kind: Subscriber
+  properties:
+  - name: device
+  - name: trigger_event

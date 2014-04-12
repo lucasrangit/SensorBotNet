@@ -1,10 +1,9 @@
-SensorBotNet
-============
+StatusBot.net
+=============
 
-SkyNet for the SensorBots.
-
+SkyNet for the [StatusBot](https://github.com/lucasrangit/StatusBot.net).
 
 TODO
 ====
-
 * Validate email address on front-end
+
