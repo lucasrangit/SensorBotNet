@@ -48,7 +48,7 @@ def main(argv):
       urllib2.urlopen("http://" + server_ip + ":" + server_port + "/" + status).read()
     except:
       pass
-    time.sleep(10)
+    time.sleep(1)
 
 if __name__ == "__main__":
   main(sys.argv)
