@@ -110,12 +110,16 @@ class MainHandler(webapp2.RequestHandler):
     try:
       device_id = int(self.request.path.split('/')[1])
       device = Device.get_by_key_name(str(device_id))
-      status_list = device.status_set.order("-created").fetch(limit=10)
+      status_list = device.status_set.order('-created').fetch(limit=10)
       subscriber_list = device.subscriber_set
+      logging.info(subscriber_list)
     except:
       device = None
-      status_list = db.Query(Status).order("-created").fetch(limit=10)
+      status_list = db.Query(Status).order('-created').fetch(limit=10)
       subscriber_list = list()
+
+    # only select those with active triggers
+    subscriber_list.filter('trigger_state = ', "Ready")
 
     template = template_env.get_template('home.html')
     context = {
