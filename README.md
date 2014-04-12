@@ -1,4 +1,4 @@
-SensorBotNet
-============
+StatusBot.net
+=============
 
-SkyNet for the SensorBots.
+SkyNet for the [https://github.com/lucasrangit/StatusBot.net][StatusBots].
