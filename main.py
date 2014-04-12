@@ -103,6 +103,9 @@ class UpdateHandler(webapp2.RequestHandler):
     status.analog1 = analog1
     status.put()
     
+    self.response.out.write('<p>OK</p>')
+
+
 class MainHandler(webapp2.RequestHandler):
 
   def get(self):
@@ -112,7 +115,6 @@ class MainHandler(webapp2.RequestHandler):
       device = Device.get_by_key_name(str(device_id))
       status_list = device.status_set.order('-created').fetch(limit=10)
       subscriber_list = device.subscriber_set
-      logging.info(subscriber_list)
       # only select those with active triggers
       subscriber_list.filter('trigger_state = ', "Ready")
     except:
