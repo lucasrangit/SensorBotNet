@@ -79,7 +79,7 @@ class UpdateHandler(webapp2.RequestHandler):
         # instead of deleting the subscriber, clear the trigger state
         # so that a record of the subscriber is kept but no further email
         # is sent
-        subscriber.trigger_state = "" 
+        subscriber.trigger_state = ""
         subscriber.put()
 
       if len(subscriber_email_list) > 0:
