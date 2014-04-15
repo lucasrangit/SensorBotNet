@@ -10,8 +10,12 @@ import random
 
 
 def main(argv):
-  server_ip = "localhost"
-  server_port = "8080"
+  if len(sys.argv) == 1:
+    print 'Usage: %s server port' % sys.argv[0]
+    return
+
+  server_ip = str(sys.argv[1])
+  server_port = str(sys.argv[2])
 
   # initialize sensors
   device = dict()
