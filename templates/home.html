@@ -43,13 +43,9 @@
   {% endif %}
   {% if device %}
     <form action="/subscribe" method="post">
-      <label for="device_id">
-         When device ID
-      </label>
-      <input name="device_id" id="device_id" type="text" size="1" value="{% if device %}{{ device.key().name() }}{% endif %}" />
+      <input name="device_id" id="device_id" type="hidden" size="1" value="{% if device %}{{ device.key().name() }}{% endif %}" />
       <label for="email">
-        state is "Ready", <br />
-        email a <b>one-time</b> notification to:<br />
+        Send <b>one-time</b> "ready" notification to:<br />
       </label>
       <input name="email" id="email" type="text" size="" value="" />
       <input type="submit" />
