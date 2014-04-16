@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}StatusBot.net{% endblock %}
+{% block header %}
+  <h1>StatusBot Listing</h1>
+{% endblock %}
+{% block content %}
+<p>Welcome to StatusBot.net, SkyNet for the StatusBot.</p>
+<p>Select a StatusBot for more information.</p>
+<table border="1" style="width:100px">
+  <tr>
+    <th>ID</th>
+    <th>State</th>
+  </tr>
+  {% for device in device_list %}
+    <tr>
+      <td><a href="/{{ device.key().name() }}">{{ device.key().name() }}</a></td>
+      <td>{{ device.state }}</td> 
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}

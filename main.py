@@ -107,11 +107,11 @@ class UpdateHandler(webapp2.RequestHandler):
     status.digital2 = digital2
     status.analog1 = analog1
     status.put()
-    
+
     self.response.out.write('<p>OK</p>')
 
 
-class MainHandler(webapp2.RequestHandler):
+class DeviceHandler(webapp2.RequestHandler):
 
   def get(self):
     # get recent status updates and filter by device ID if specified
@@ -131,7 +131,7 @@ class MainHandler(webapp2.RequestHandler):
       status_list = db.Query(Status).order('-created').fetch(limit=10)
       subscriber_list = list()
 
-    template = template_env.get_template('home.html')
+    template = template_env.get_template('device.html')
     context = {
       'device' : device,
       'status_list': status_list,
@@ -140,8 +140,21 @@ class MainHandler(webapp2.RequestHandler):
     }
     self.response.out.write(template.render(context))
 
+
+class MainHandler(webapp2.RequestHandler):
+
+  def get(self):
+    device_list = db.Query(Device)
+    template = template_env.get_template('main.html')
+    context = {
+      'device_list': device_list,
+    }
+    self.response.out.write(template.render(context))
+
+
 application = webapp2.WSGIApplication(
-  [('/subscribe', SubscribePage), ('/update', UpdateHandler), ('/.*', MainHandler)],
+  [('/subscribe', SubscribePage), ('/update', UpdateHandler), 
+    ('/[0-9]+', DeviceHandler), ('/.*', MainHandler)],
   config=config,
   debug=True)
 

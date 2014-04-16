@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}#{{ device.key().name() }}{% endblock %}
+{% block header %}
+  <h1>StatusBot #{{ device.key().name() }} is {{ device.state }} since {{ device.updated.strftime('%H:%M:%S') }}</h1>
+{% endblock %}
+{% block content %}
+  <p>Server time: {{ datetime.strftime('%H:%M:%S') }}</p>
+  <table border="1" style="width:300px">
+    <tr>
+      <th>Time</th>
+      <th>Digital 1</th>
+      <th>Digital 2</th>
+      <th>Analog 1</th>
+    </tr>
+  {% for status in status_list %}
+    <tr>
+        <td>{{ status.created.strftime('%H:%M:%S') }}</td>
+        <td>{{ status.digital1 }}</td>
+        <td>{{ status.digital2 }}</td> 
+        <td>{{ status.analog1 }}</td> 
+    </tr>
+  {% endfor %}
+  </table>
+  <p>Subscribers: {{ subscriber_list.count(20) }}</p>
+  {% if device %}
+    <form action="/subscribe" method="post">
+      <input name="device_id" id="device_id" type="hidden" size="1" value="{{ device.key().name() }}" />
+      <label for="email">
+        Subscribe to <b>one-time</b> ready notification:<br />
+      </label>
+      <input name="email" id="email" type="text" size="" value="" />
+      <input type="submit" />
+    </form>
+  {% endif %}
+{% endblock %}
