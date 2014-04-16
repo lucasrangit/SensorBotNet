@@ -127,9 +127,9 @@ class DeviceHandler(webapp2.RequestHandler):
       # only select those with active triggers
       subscriber_list.filter('trigger_state = ', "Ready")
     except:
-      device = None
-      status_list = db.Query(Status).order('-created').fetch(limit=10)
-      subscriber_list = list()
+      logging.info('Unknown device')
+      self.redirect('/')
+      return
 
     template = template_env.get_template('device.html')
     context = {
