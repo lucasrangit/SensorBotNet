@@ -29,8 +29,9 @@ class SubscribePage(webapp2.RequestHandler):
       return
 
     email = self.request.get('email')
-    if device.subscriber_set.filter('email =', email).filter('trigger_state =', "Ready").count(1) == 1:
-      self.response.out.write('<p>Already subscribed</p>')
+    subscriber = device.subscriber_set.filter('email =', email).filter('trigger_state =', "Ready").get()
+    if subscriber:
+      self.response.out.write('<p>Already subscribed: ' + subscriber.email + '</p>')
       return
 
     subscriber = Subscriber(device=device, email=email)
