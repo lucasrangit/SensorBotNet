@@ -33,7 +33,7 @@
     </tr>
   {% endfor %}
   </table>
-  <p>Subscribers: {{ subscriber_list.count() }}</p>
+  <p>Subscribers: {{ subscriber_list.count(20) }}</p>
   {% if device %}
     <form action="/subscribe" method="post">
       <input name="device_id" id="device_id" type="hidden" size="1" value="{% if device %}{{ device.key().name() }}{% endif %}" />
