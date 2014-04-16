@@ -97,7 +97,7 @@ class UpdateHandler(webapp2.RequestHandler):
 
     else:
       logging.info('Update new device')
-      device = Device(key_name=dev_id, state="Unknown")
+      device = Device(key_name=dev_id)
       device.uptime = uptime
       device.put()
 
