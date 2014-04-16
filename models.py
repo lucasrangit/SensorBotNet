@@ -19,4 +19,4 @@ class Subscriber(db.Model):
   email = db.StringProperty(required=True)
   created = db.DateTimeProperty(auto_now_add=True,indexed=False)
   trigger_state = db.StringProperty()
-    
+
