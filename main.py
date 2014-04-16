@@ -38,7 +38,7 @@ class SubscribePage(webapp2.RequestHandler):
     subscriber.trigger_state = "Ready"
     subscriber.put()
 
-    self.response.out.write('<p>Subscribed</p>')
+    self.response.out.write('<p>Subscribed: ' + subscriber.email + '</p>')
     
 class UpdateHandler(webapp2.RequestHandler):
 
