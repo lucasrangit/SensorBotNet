@@ -33,19 +33,12 @@
     </tr>
   {% endfor %}
   </table>
-  {% if subscriber_list.count(1) > 0 %}
-    <p>Subscriber list:</p>
-    <ul>
-    {% for subscriber in subscriber_list %}
-      <li>{{ subscriber.email }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
+  <p>Subscribers: {{ subscriber_list.count() }}</p>
   {% if device %}
     <form action="/subscribe" method="post">
       <input name="device_id" id="device_id" type="hidden" size="1" value="{% if device %}{{ device.key().name() }}{% endif %}" />
       <label for="email">
-        Send <b>one-time</b> "ready" notification to:<br />
+        Subscribe to <b>one-time</b> ready notification:<br />
       </label>
       <input name="email" id="email" type="text" size="" value="" />
       <input type="submit" />
