@@ -1,6 +1,5 @@
 import datetime
 import jinja2
-from models import Device, Status, Subscriber
 import os
 import webapp2
 import urllib2
@@ -12,6 +11,9 @@ from google.appengine.ext import db
 from webapp2_extras import sessions
 
 from google.appengine.api import mail
+
+from models import Device, Status, Subscriber
+from statusbot import StatusBot
 
 config = {}
 config['webapp2_extras.sessions'] = dict(secret_key='')
@@ -29,13 +31,13 @@ class SubscribePage(webapp2.RequestHandler):
       return
 
     email = self.request.get('email')
-    subscriber = device.subscriber_set.filter('email =', email).filter('trigger_state =', "Ready").get()
+    subscriber = device.subscriber_set.filter('email =', email).filter('trigger_state =', "ready").get()
     if subscriber:
       self.response.out.write('<p>Already subscribed: ' + subscriber.email + '</p>')
       return
 
     subscriber = Subscriber(device=device, email=email)
-    subscriber.trigger_state = "Ready"
+    subscriber.trigger_state = "ready"
     subscriber.put()
 
     self.response.out.write('<p>Subscribed: ' + subscriber.email + '</p>')
@@ -61,19 +63,12 @@ class UpdateHandler(webapp2.RequestHandler):
 #      logging.info('Update existing device')
       device.uptime = uptime
 
-      # update state
+      # determine next state
       current_state = device.state
-      if current_state == "Unknown" or current_state == "Available":
-        if analog1 < 5.0:
-          device.state = "Busy"
-
-      elif current_state == "Busy":
-        if analog1 >= 5.0:
-          device.state = "Ready"
-
-      elif current_state == "Ready":
-        device.state = "Available"
-
+      next_state = StatusBot().next_state(current_state).action(analog1)
+      logging.info('state: %s -> %s' % (current_state, next_state))
+      # update state
+      device.state = next_state
       device.put()
 
       # send notification to subscribers who's trigger state is the current state
@@ -120,12 +115,12 @@ class DeviceHandler(webapp2.RequestHandler):
       device = Device.get_by_key_name(str(device_id))
       expire_at = datetime.datetime.now() - datetime.timedelta(minutes = 30)
       if expire_at > device.updated:
-        device.state = "Unknown"
+        device.state = "unknown"
         device.put()
       status_list = device.status_set.order('-created').fetch(limit=10)
       subscriber_list = device.subscriber_set
       # only select those with active triggers
-      subscriber_list.filter('trigger_state = ', "Ready")
+      subscriber_list.filter('trigger_state = ', "ready")
     except:
       logging.info('Unknown device')
       self.redirect('/')
