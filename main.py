@@ -68,7 +68,7 @@ class UpdateHandler(webapp2.RequestHandler):
       next_state = StatusBot().next_state(current_state).action(analog1)
       logging.info('state: %s -> %s' % (current_state, next_state))
       # update state
-      if current_state not next_state:
+      if current_state != next_state:
         device.state = next_state
         device.put()
 
