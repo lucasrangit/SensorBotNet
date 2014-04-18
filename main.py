@@ -68,8 +68,9 @@ class UpdateHandler(webapp2.RequestHandler):
       next_state = StatusBot().next_state(current_state).action(analog1)
       logging.info('state: %s -> %s' % (current_state, next_state))
       # update state
-      device.state = next_state
-      device.put()
+      if current_state not next_state:
+        device.state = next_state
+        device.put()
 
       # send notification to subscribers who's trigger state is the current state
       subscriber_list = device.subscriber_set.filter('trigger_state =', device.state)
