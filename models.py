@@ -5,8 +5,8 @@ class Device(db.Model):
   created = db.DateTimeProperty(auto_now_add=True)
   updated = db.DateTimeProperty(auto_now=True,indexed=False)
   uptime = db.IntegerProperty(indexed=False)
-  state = db.StringProperty(default='Unknown')
-  model = db.StringProperty(required=True,default='Unknown',indexed=False)
+  state = db.StringProperty(default='unknown')
+  model = db.StringProperty(required=True,default='unknown',indexed=False)
 
 class Status(db.Model):
   device = db.ReferenceProperty(Device,required=True)
