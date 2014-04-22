@@ -12,15 +12,28 @@ class State(object):
 class Unknown(State):
 
   def action(self, data):
-    if data > 4.9:
-      return 'idle'
-    
-    return 'unknown' 
+    return 'idle'
 
 class Idle(State):
 
   def action(self, data):
-    if data <= 4.9:
+    if data:
+      return 'not_ready_1'
+
+    return 'idle'
+
+class NotReady_1(State):
+
+  def action(self, data):
+    if data:
+      return 'not_ready_2'
+
+    return 'idle'
+
+class NotReady_2(State):
+
+  def action(self, data):
+    if data:
       return 'not_ready'
     
     return 'idle'
@@ -28,10 +41,26 @@ class Idle(State):
 class NotReady(State):
 
   def action(self, data):
-    if data > 4.9:
-      return 'ready'
+    if not data:
+      return 'ready_1'
     
     return 'not_ready'
+
+class Ready_1(State):
+
+  def action(self, data):
+    if not data:
+      return 'ready_2'
+
+    return 'idle'
+
+class Ready_2(State):
+
+  def action(self, data):
+    if not data:
+      return 'ready'
+
+    return 'idle'
 
 class Ready(State):
 
@@ -43,7 +72,11 @@ class StatusBot(object):
   states = {
     'unknown': Unknown(),
     'idle': Idle(),
+    'not_ready_1': NotReady_1(),
+    'not_ready_2': NotReady_2(),
     'not_ready': NotReady(),
+    'ready_1': Ready_1(),
+    'ready_2': Ready_2(),
     'ready': Ready(),
   }
 

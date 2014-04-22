@@ -65,7 +65,7 @@ class UpdateHandler(webapp2.RequestHandler):
 
       # determine next state
       current_state = device.state
-      next_state = StatusBot().next_state(current_state).action(analog1)
+      next_state = StatusBot().next_state(current_state).action(True if analog1 > 4.9 else False)
       logging.info('state: %s -> %s' % (current_state, next_state))
       # update state
       if current_state != next_state:
