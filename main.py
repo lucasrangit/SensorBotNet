@@ -71,6 +71,12 @@ class UpdateHandler(webapp2.RequestHandler):
       if current_state != next_state:
         device.state = next_state
         device.put()
+        # save device status on state change only
+        status = Status(device=device)
+        status.digital1 = digital1
+        status.digital2 = digital2
+        status.analog1 = analog1
+        status.put()
 
       # send notification to subscribers who's trigger state is the current state
       subscriber_list = device.subscriber_set.filter('trigger_state =', device.state)
@@ -96,13 +102,12 @@ class UpdateHandler(webapp2.RequestHandler):
       device = Device(key_name=dev_id)
       device.uptime = uptime
       device.put()
-
-    # save device status
-    status = Status(device=device)
-    status.digital1 = digital1
-    status.digital2 = digital2
-    status.analog1 = analog1
-    status.put()
+      # save device status when a device is added for the first time
+      status = Status(device=device)
+      status.digital1 = digital1
+      status.digital2 = digital2
+      status.analog1 = analog1
+      status.put()
 
     self.response.out.write('<p>OK</p>')
 
