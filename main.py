@@ -120,10 +120,13 @@ class DeviceHandler(webapp2.RequestHandler):
     try:
       device_id = int(self.request.path.split('/')[1])
       device = Device.get_by_key_name(str(device_id))
+
+      # expire status updates that are 30 minutes old
       expire_at = datetime.datetime.now() - datetime.timedelta(minutes = 30)
       if expire_at > device.updated:
         device.state = "unknown"
         device.put()
+
       status_list = device.status_set.order('-created').fetch(limit=10)
       subscriber_list = device.subscriber_set
       # only select those with active triggers
