@@ -92,7 +92,7 @@ class UpdateHandler(webapp2.RequestHandler):
 
       if len(subscriber_email_list) > 0:
         message = mail.EmailMessage(
-          sender='donotreply@statusbotnet.appspotmail.com',
+          sender='StatusBot.net <donotreply@statusbotnet.appspotmail.com>',
           to=subscriber_email_list,
           subject='StatusBot #' + device.key().name() + ' Update!',
           body="State has changed to " + device.state)
