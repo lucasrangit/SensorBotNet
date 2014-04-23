@@ -1,40 +1,67 @@
 #!/usr/bin/env python
 #
-# SensorBot Simulator
+# StatusBot Simulator
 # 
 import sys
 import urllib2
 import time
 import random
 
+class Device(object):
 
+  def __init__(self, num):
+    self.status = dict()
+    self.status['id'] = num
+    self.status['uptime'] = 0
+
+    # start all sensors either high or low
+    self.status['digital1'] = random.randint(0,1)
+    self.status['digital2'] = random.randint(0,1)
+    self.status['analog1'] = float(random.randint(0,1)) * 5.0
+
+    self.duty_cycle = random.randint(0,100)
+
+  def get_status(self):
+    # update and return test sensor data
+    self.status['uptime'] += 1
+    self.duty_cycle -= 1
+    if self.duty_cycle < 0:
+      # toggle 0/1 and update with a new duty cycle
+      x = self.status['digital1']
+      self.status['digital1'] = (x + 1) % 2
+      # update with new duty cycle
+      self.duty_cycle = random.randint(0,100)
+    self.status['digital2'] = random.randint(0,1)
+    analog1 = float(random.randint(-1,1)) * float(random.randint(0,10)) / 10.0
+    self.status['analog1'] += analog1
+    if self.status['analog1'] > 5.1:
+      self.status['analog1'] = 5.1
+    elif self.status['analog1'] < 0.0:
+      self.status['analog1'] = 0.0
+
+    return self.status
 
 def main(argv):
   if len(sys.argv) == 1:
-    print 'Usage: %s server port' % sys.argv[0]
+    print 'Usage: %s server port [device count]' % sys.argv[0]
     return
 
   server_ip = str(sys.argv[1])
   server_port = str(sys.argv[2])
+  if len(sys.argv) > 3:
+    device_count = int(sys.argv[3])
+  else:
+    device_count = 1
 
-  # initialize sensors
-  device = dict()
-  device['id'] = 0
-  device['uptime'] = 0
-  device['digital1'] = 0
-  device['digital1'] = 0
-  device['analog1'] = 0.0
-
-  last_device = dict() 
+  # initialize devices
+  devices = list()
+  for device_num in range(0,device_count):
+    devices.append(Device(device_num+1))
 
   while True:
-    # update test sensor data 
-    device['uptime'] += 1
-    device['id'] = random.randint(1,10)
-    device['digital1'] = random.randint(0, 1)
-    device['digital2'] = random.randint(0, 1)
-    device['analog1'] = random.randint(0.0, 5) # FIXME make float 
 
+    dev = devices[random.randint(0,device_count-1)]
+    device = dev.get_status()
     # build status message
     status = "update"
     first = True
