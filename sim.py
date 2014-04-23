@@ -7,6 +7,8 @@ import urllib2
 import time
 import random
 
+MAX_VDC = 5.1
+
 class Device(object):
 
   def __init__(self, num):
@@ -34,8 +36,8 @@ class Device(object):
     self.status['digital2'] = random.randint(0,1)
     analog1 = float(random.randint(-1,1)) * float(random.randint(0,10)) / 10.0
     self.status['analog1'] += analog1
-    if self.status['analog1'] > 5.1:
-      self.status['analog1'] = 5.1
+    if self.status['analog1'] > MAX_VDC:
+      self.status['analog1'] = MAX_VDC
     elif self.status['analog1'] < 0.0:
       self.status['analog1'] = 0.0
 
