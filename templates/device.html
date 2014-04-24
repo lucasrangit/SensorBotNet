@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% block title %}#{{ device.key().name() }}{% endblock %}
 {% block header %}
-  <h1>StatusBot #{{ device.key().name() }} is {{ device.state }} since {{ device.updated.strftime('%H:%M:%S') }}</h1>
+  <h1>StatusBot #{{ device.key().name() }} is {{ current_state }} since {{ device.updated.strftime('%H:%M:%S') }}</h1>
 {% endblock %}
 {% block content %}
+  <p>Last ready state: {{ status_last_ready.created.strftime('%H:%M:%S') }}</p>
   <p>Server time: {{ datetime.strftime('%H:%M:%S') }}</p>
   <table border="1" style="width:300px">
     <tr>
       <th>Time</th>
+      <th>State</th>
       <th>Digital 1</th>
       <th>Digital 2</th>
       <th>Analog 1</th>
@@ -15,6 +17,7 @@
   {% for status in status_list %}
     <tr>
         <td>{{ status.created.strftime('%H:%M:%S') }}</td>
+        <td>{{ status.state }}</td>
         <td>{{ status.digital1 }}</td>
         <td>{{ status.digital2 }}</td> 
         <td>{{ status.analog1 }}</td> 
