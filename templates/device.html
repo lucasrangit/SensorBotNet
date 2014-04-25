@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% block title %}#{{ device.key().name() }}{% endblock %}
 {% block header %}
-  <h1>StatusBot #{{ device.key().name() }} is {{ current_state }} since {{ device.updated.strftime('%H:%M:%S') }}</h1>
+  {% if current_state != 'unknonw' %}
+    <h1>StatusBot #{{ device.key().name() }} is {{ current_state }} since {{ status_list[0].created.strftime('%H:%M:%S') }}</h1>
+  {% else %}
+   <h1>StatusBot #{{ device.key().name() }} Status</h1>
+  {% endif %}
 {% endblock %}
 {% block content %}
   {% if status_last_ready %}
