@@ -14,7 +14,7 @@
   {% for device in device_list %}
     <tr>
       <td><a href="/{{ device.key().name() }}">{{ device.key().name() }}</a></td>
-      <td>{{ device.state }}</td> 
+      <td>{{ device.status_set.order('-created').get().state }}</td>
     </tr>
   {% endfor %}
 </table>

@@ -59,8 +59,7 @@ class UpdateHandler(webapp2.RequestHandler):
       digital1 = int(self.request.get('digital1'))
       digital2 = int(self.request.get('digital2'))
       analog1 = float(self.request.get('analog1'))
-
-    except: 
+    except ValueError:
       logging.info('Input error')
       self.response.out.write('<p>Input error</p>')
       return 
@@ -130,27 +129,27 @@ class DeviceHandler(webapp2.RequestHandler):
     try:
       device_id = int(self.request.path.split('/')[1])
       device = Device.get_by_key_name(str(device_id))
-
-      # expire status updates that are 30 minutes old
-      expire_at = datetime.datetime.now() - datetime.timedelta(minutes = 30)
-      status_list = device.status_set.order('-created').fetch(limit=10)
-      current_state = status_list.get()
-      if current_state:
-        # device has status history
-        if expire_at > device.updated:
-          current_state = 'unknown'
-      else:
-        # device status is unknown (has this device not come online yet?)
-        current_state = 'unknown'
-
-      status_last_ready = device.status_set.filter('state =', 'ready').fetch(limit=1)
-      subscriber_list = device.subscriber_set
-      # only select those with active triggers
-      subscriber_list.filter('trigger_state = ', 'ready')
-    except:
+    except ValueError:
       logging.info('Unknown device')
       self.redirect('/')
       return
+
+    # expire status updates that are 30 minutes old
+    expire_at = datetime.datetime.now() - datetime.timedelta(minutes = 30)
+    status_list = device.status_set.order('-created').fetch(limit=10)
+    current_state = status_list[0].state
+    if current_state:
+      # device has status history
+      if expire_at > device.updated:
+        current_state = 'unknown'
+    else:
+      # device status is unknown (has this device not come online yet?)
+      current_state = 'unknown'
+
+    status_last_ready = device.status_set.filter('state =', 'ready').get()
+    subscriber_list = device.subscriber_set
+    # only select those with active triggers
+    subscriber_list.filter('trigger_state = ', 'ready')
 
     template = template_env.get_template('device.html')
     context = {
@@ -168,8 +167,6 @@ class MainHandler(webapp2.RequestHandler):
 
   def get(self):
     device_list = db.Query(Device)
-    # FIXME figure out best way to get status from device without creating a new list
-    #current_state = device.status_set.order('-created').get().state
     template = template_env.get_template('main.html')
     context = {
       'device_list': device_list,
