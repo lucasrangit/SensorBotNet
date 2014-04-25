@@ -13,6 +13,7 @@ import time
 import random
 
 MAX_VDC = 5.1
+uptime = 0
 
 class Device(object):
 
@@ -30,7 +31,9 @@ class Device(object):
 
   def get_status(self):
     # update and return test sensor data
-    self.status['uptime'] += 1
+    global uptime
+    uptime += 1
+    self.status['uptime'] = uptime
     self.duty_cycle -= 1
     if self.duty_cycle < 0:
       # toggle 0/1 and update with a new duty cycle
