@@ -126,10 +126,9 @@ class DeviceHandler(webapp2.RequestHandler):
 
   def get(self):
     # get recent status updates and filter by device ID if specified
-    try:
-      device_id = int(self.request.path.split('/')[1])
-      device = Device.get_by_key_name(str(device_id))
-    except ValueError:
+    device_id = int(self.request.path.split('/')[1])
+    device = Device.get_by_key_name(str(device_id))
+    if not device:
       logging.info('Unknown device')
       self.redirect('/')
       return
