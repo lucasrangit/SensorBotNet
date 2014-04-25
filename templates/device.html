@@ -4,7 +4,9 @@
   <h1>StatusBot #{{ device.key().name() }} is {{ current_state }} since {{ device.updated.strftime('%H:%M:%S') }}</h1>
 {% endblock %}
 {% block content %}
-  <p>Last ready state: {{ status_last_ready.created.strftime('%H:%M:%S') }}</p>
+  {% if status_last_ready %}
+    <p>Last ready state: {{ status_last_ready.created.strftime('%H:%M:%S') }}</p>
+  {% endif %}
   <p>Server time: {{ datetime.strftime('%H:%M:%S') }}</p>
   <table border="1" style="width:300px">
     <tr>
