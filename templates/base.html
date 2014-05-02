@@ -2,14 +2,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="/static/glike.css" rel="stylesheet" type="text/css" />
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/bootstrap/css/dashboard.css" rel="stylesheet" type="text/css" >
     <title>StatusBot {% block title %}{% endblock %} Status</title>
 		{% block head %}{% endblock %}
   </head>
   <body>
     <div id="header">{% block header %}{% endblock %}</div>
 		<div id="content">{% block content %}{% endblock %}</div>	
-    </script>
+  
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/bootstrap/js/docs.min.js"></script>
   </body>
 </html>
 
