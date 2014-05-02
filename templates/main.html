@@ -2,38 +2,27 @@
 {% block title %}StatusBot.net{% endblock %}
 {% block header %}
   <link href="/static/bootstrap/css/dashboard.css" rel="stylesheet" type="text/css" />
-  <h1>StatusBot Dashboard</h1>
 {% endblock %}
 {% block content %}
     <div class="container-fluid">
       <div class="row">
-          <h1 class="page-header">Recent</h1>
-          <p>Welcome to StatusBot.net, SkyNet for the StatusBot.</p>
+          <h1 class="page-header">Dashboard</h1>
 
           <div class="row placeholders">
+          {% for device in device_list %}
             <div class="col-xs-6 col-sm-3 placeholder">
-              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
+            {% if device.status_set.order('-created').get().state == 'ready' %}
+              <img data-src="holder.js/100x100/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
+            {% else %}
+              <img data-src="holder.js/100x100/auto/lava" class="img-responsive" alt="Generic placeholder thumbnail">
+            {% endif %}
+              <h4><a href="/{{ device.key().name() }}">{{ device.key().name() }}</a></h4>
+              <span class="text-muted">{{ device.location }}</span>
             </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
+          {% endfor %}
           </div>
 
-          <h2 class="sub-header">All</h2>
+          <h2 class="sub-header">Details</h2>
           <p>Select a StatusBot for more information.</p>
           <div class="table-responsive">
             <table class="table table-striped">
@@ -48,7 +37,7 @@
               {% for device in device_list %}
                 <tr>
                   <td><a href="/{{ device.key().name() }}">{{ device.key().name() }}</a></td>
-                  <td>Unknown</td>
+                  <td>{{ device.location }}</td>
                   <td>{{ device.status_set.order('-created').get().state }}</td>
                 </tr>
               {% endfor %}

@@ -13,6 +13,7 @@ class Device(db.Model):
   updated = db.DateTimeProperty(auto_now=True,indexed=False)
   uptime = db.IntegerProperty(indexed=False)
   model_name = db.StringProperty(required=True,default='generic',indexed=False)
+  location = db.StringProperty(required=True,default='unknown', indexed=False)
 
 class Status(db.Model):
   created = db.DateTimeProperty(auto_now_add=True)
