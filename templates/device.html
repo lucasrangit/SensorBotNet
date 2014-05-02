@@ -1,12 +1,7 @@
 {% extends "base.html" %}
 {% block title %}#{{ device.key().name() }}{% endblock %}
-{% block header %}
+{% block head %}
     <link href="/static/bootstrap/css/cover.css" rel="stylesheet" type="text/css" />
-  {% if current_state != 'unknown' %}
-    <h1>StatusBot #{{ device.key().name() }} is {{ current_state }} since {{ status_list[0].created.strftime('%H:%M:%S') }}</h1>
-  {% else %}
-   <h1>StatusBot #{{ device.key().name() }} Status</h1>
-  {% endif %}
 {% endblock %}
 {% block content %}
 
@@ -29,24 +24,20 @@
 
           <div class="inner cover">
             <h1 class="cover-heading">
-            {% if current_state != 'ready' %}
-              {% if status_last_ready %}
-                Last Ready {{ status_last_ready.created.strftime('%H:%M:%S') }}
-              {% else %}
-                {{ current_state }}
-              {% endif %}
-            {% endif %}
+              StatusBot #{{ device.key().name() }}
             </h1>
             <p class="lead">
-
             {% if current_state == 'ready' %}
-              I'm ready for you! Come on by!
+              Ready!
             {% else %}
-              Sorry, I'm not ready. Sign-up for a one-time ready notification.
+              {{ current_state }}</br>
+              {% if status_last_ready %}
+                Last Ready {{ status_last_ready.created.strftime('%H:%M:%S') }}
+              {% endif %}
             {% endif %}
             </p>
             <p class="lead">
-              <a href="#" class="btn btn-lg btn-default">Learn more</a>
+              <a href="#" class="btn btn-lg btn-default">Subscribe</a>
             </p>
           </div>
 
