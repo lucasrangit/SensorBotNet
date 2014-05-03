@@ -10,6 +10,7 @@ import jinja2
 import os
 import webapp2
 import urllib2
+from email.utils import parseaddr
 
 import logging
 logging.getLogger().setLevel(logging.DEBUG)
@@ -38,6 +39,10 @@ class SubscribePage(webapp2.RequestHandler):
       return
 
     email = self.request.get('email')
+    if parseaddr(email) == ('', ''):
+      self.response.out.write('<p>Invalid email</p>')
+      return
+
     subscriber = device.subscriber_set.filter('email =', email).filter('trigger_state =', "ready").get()
     if subscriber:
       self.response.out.write('<p>Already subscribed: ' + subscriber.email + '</p>')
