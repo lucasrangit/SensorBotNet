@@ -35,24 +35,24 @@ class SubscribePage(webapp2.RequestHandler):
     device_id = self.request.get('device_id')
     device = Device.get_by_key_name(device_id)
     if not device:  
-      self.response.out.write('<p>Device does not exist</p>')
+      self.response.out.write('<div id="content"><p>Device does not exist</p></div>')
       return
 
     email = self.request.get('email')
     if parseaddr(email) == ('', ''):
-      self.response.out.write('<p>Invalid email</p>')
+      self.response.out.write('<div id="content"><p>Invalid email</p></div>')
       return
 
     subscriber = device.subscriber_set.filter('email =', email).filter('trigger_state =', "ready").get()
     if subscriber:
-      self.response.out.write('<p>Already subscribed: ' + subscriber.email + '</p>')
+      self.response.out.write('<div id="content"><p>Already subscribed: ' + subscriber.email + '</p></div>')
       return
 
     subscriber = Subscriber(device=device, email=email)
     subscriber.trigger_state = "ready"
     subscriber.put()
 
-    self.response.out.write('<p>Subscribed: ' + subscriber.email + '</p>')
+    self.response.out.write('<div id="content"><p>Subscribed: ' + subscriber.email + '</p></div>')
     
 class UpdateHandler(webapp2.RequestHandler):
 
