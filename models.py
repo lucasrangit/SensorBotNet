@@ -14,14 +14,16 @@ class Device(db.Model):
   uptime = db.IntegerProperty(indexed=False)
   model_name = db.StringProperty(required=True,default='generic',indexed=False)
   location = db.StringProperty(required=True,default='unknown', indexed=False)
+  state = db.StringProperty(required=True,default='unknown')
+  ready = db.DateTimeProperty()
 
-class Status(db.Model):
-  created = db.DateTimeProperty(auto_now_add=True)
-  device = db.ReferenceProperty(Device,required=True)
-  state = db.StringProperty(default='unknown')
-  digital1 = db.IntegerProperty(indexed=False)
-  digital2 = db.IntegerProperty(indexed=False)
-  analog1 = db.FloatProperty(indexed=False)
+#class Status(db.Model):
+#  created = db.DateTimeProperty(auto_now_add=True)
+#  device = db.ReferenceProperty(Device,required=True)
+#  state = db.StringProperty(default='unknown')
+#  digital1 = db.IntegerProperty(indexed=False)
+#  digital2 = db.IntegerProperty(indexed=False)
+#  analog1 = db.FloatProperty(indexed=False)
 
 class Subscriber(db.Model):
   device = db.ReferenceProperty(Device,required=True)

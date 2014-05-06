@@ -31,8 +31,8 @@
               Ready!
             {% else %}
               {{ current_state }}</br>
-              {% if status_last_ready %}
-                Last Ready {{ status_last_ready.created.strftime('%H:%M:%S') }}
+              {% if ready %}
+                Last Ready {{ ready.strftime('%H:%M:%S') }}
               {% endif %}
             {% endif %}
             </p>
@@ -70,27 +70,6 @@
       </div>
 
     </div>
-<!--
-  <p>Server time: {{ datetime.strftime('%H:%M:%S') }}</p>
-  <table border="1" style="width:300px">
-    <tr>
-      <th>Time</th>
-      <th>State</th>
-      <th>Digital 1</th>
-      <th>Digital 2</th>
-      <th>Analog 1</th>
-    </tr>
-  {% for status in status_list %}
-    <tr>
-        <td>{{ status.created.strftime('%H:%M:%S') }}</td>
-        <td>{{ status.state }}</td>
-        <td>{{ status.digital1 }}</td>
-        <td>{{ status.digital2 }}</td> 
-        <td>{{ status.analog1 }}</td> 
-    </tr>
-  {% endfor %}
-  </table>
--->
 {% endblock %}
 
 {% block scripts %}

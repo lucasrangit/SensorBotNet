@@ -20,7 +20,7 @@ from webapp2_extras import sessions
 
 from google.appengine.api import mail
 
-from models import Device, Status, Subscriber
+from models import Device, Subscriber
 from statusbot import StatusBot
 
 config = {}
@@ -77,22 +77,19 @@ class UpdateHandler(webapp2.RequestHandler):
 
       # determine next state
       # TODO make one line
-      current_state = device.status_set.order('-created').get().state
+      current_state = device.state
       if current_state:
         next_state = StatusBot().next_state(current_state).action(True if analog1 > 4.9 else False)
       else:
         current_state = 'unknown'
 
-      # update state
-      # this is why device status is saved on state change only
+      # update state only if a state transition occurred
       if current_state != next_state:
         logging.info('state: %s -> %s' % (current_state, next_state))
-        status = Status(device=device)
-        status.state = next_state
-        status.digital1 = digital1
-        status.digital2 = digital2
-        status.analog1 = analog1
-        status.put()
+        device.state = next_state
+        if next_state == 'ready':
+          device.ready = datetime.datetime.now()
+        device.put()
 
       # send notification to subscribers who's trigger state is the current state
       subscriber_list = device.subscriber_set.filter('trigger_state =', current_state)
@@ -118,12 +115,6 @@ class UpdateHandler(webapp2.RequestHandler):
       device = Device(key_name=dev_id)
       device.uptime = uptime
       device.put()
-      # save device status when a device is added for the first time
-      status = Status(device=device)
-      status.digital1 = digital1
-      status.digital2 = digital2
-      status.analog1 = analog1
-      status.put()
 
     self.response.out.write('<p>OK</p>')
 
@@ -141,8 +132,7 @@ class DeviceHandler(webapp2.RequestHandler):
 
     # expire status updates that are 30 minutes old
     expire_at = datetime.datetime.now() - datetime.timedelta(minutes = 30)
-    status_list = device.status_set.order('-created').fetch(limit=10)
-    current_state = status_list[0].state
+    current_state = device.state
     if current_state:
       # device has status history
       if expire_at > device.updated:
@@ -151,7 +141,7 @@ class DeviceHandler(webapp2.RequestHandler):
       # device status is unknown (has this device not come online yet?)
       current_state = 'unknown'
 
-    status_last_ready = device.status_set.filter('state =', 'ready').get()
+    ready = device.ready
     subscriber_list = device.subscriber_set
     # only select those with active triggers
     subscriber_list.filter('trigger_state = ', 'ready')
@@ -160,8 +150,7 @@ class DeviceHandler(webapp2.RequestHandler):
     context = {
       'device' : device,
       'current_state': current_state,
-      'status_list': status_list,
-      'status_last_ready': status_last_ready,
+      'ready': ready,
       'subscriber_list': subscriber_list,
       'datetime': datetime.datetime.now(),
     }

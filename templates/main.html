@@ -17,7 +17,7 @@
           <div class="row placeholders">
           {% for device in device_list %}
             <div class="col-xs-6 col-sm-3 placeholder">
-            {% if device.status_set.order('-created').get().state == 'ready' %}
+            {% if device.state == 'ready' %}
               <img data-src="holder.js/100x100/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
             {% else %}
               <img data-src="holder.js/100x100/auto/lava" class="img-responsive" alt="Generic placeholder thumbnail">
@@ -44,7 +44,7 @@
                 <tr>
                   <td><a href="/{{ device.key().name() }}">{{ device.key().name() }}</a></td>
                   <td>{{ device.location }}</td>
-                  <td>{{ device.status_set.order('-created').get().state }}</td>
+                  <td>{{ device.state }}</td>
                 </tr>
               {% endfor %}
               </tbody>
