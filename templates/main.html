@@ -2,17 +2,28 @@
 {% block title %}StatusBot.net{% endblock %}
 {% block head %}
   <link href="/static/bootstrap/css/dashboard.css" rel="stylesheet" type="text/css" />
+  <link href="/static/bootstrap/css/cover.css" rel="stylesheet" type="text/css" />
 {% endblock %}
 {% block content %}
 
-    <div class="page-header">
-      <h1>Welcome to StatusBot.net, SkyNet for the StatusBots</h1>
-      <p>Select a device for more details</p>
-    </div>
 
-    <div class="container-fluid">
-      <div class="row">
-          <h1 class="page-header">Dashboard</h1>
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">StatusBot.net</h3>
+              <ul class="nav masthead-nav">
+                <li class="active"><a href="main.html">Dashboard</a></li>
+                <li><a href="about.html">About</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="inner cover">
 
           <div class="row placeholders">
           {% for device in device_list %}
@@ -28,30 +39,16 @@
           {% endfor %}
           </div>
 
-          <h2 class="sub-header">Details</h2>
-          <p>Select a StatusBot for more information.</p>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Location</th>
-                  <th>State</th>
-                </tr>
-              </thead>
-              <tbody>
-              {% for device in device_list %}
-                <tr>
-                  <td><a href="/{{ device.key().name() }}">{{ device.key().name() }}</a></td>
-                  <td>{{ device.location }}</td>
-                  <td>{{ device.state }}</td>
-                </tr>
-              {% endfor %}
-              </tbody>
-            </table>
+          <div class="mastfoot">
+            <div class="inner">
+              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+            </div>
           </div>
 
+        </div>
+
       </div>
+
     </div>
 
 {% endblock %}
