@@ -28,14 +28,14 @@
             </h1>
             <p class="lead">
             {% if current_state == 'ready' %}
-              Ready!
+              Is ready now!
             {% else %}
               {{ current_state }}</br>
               {% if ready %}
-                Last Ready {{ ready.strftime('%H:%M:%S') }}
+                Was ready <span class="lead" id="last_ready_time">{{ ready }}</span>
               {% endif %}
-            {% endif %}
             </p>
+            {% endif %}
             <p class="lead">
               <a href="#" id="subscribe-button" class="btn btn-lg btn-default" data-toggle="collapse" data-target="#subscribe-area">Get one-time ready notification</a>
             </p>
@@ -95,6 +95,12 @@ $( "#form-subscribe" ).submit(function( event ) {
     $( "#subscribe-button" ).empty().append( data );
     $( '.collapse' ).collapse('hide');
   });
+});
+
+$('document').ready(function() {
+  var $ready_time = $('#last_ready_time');
+  var time_ago = moment($ready_time.html()).utc().fromNow();
+  $ready_time.html(time_ago);
 });
 </script>
 {% endblock %}
