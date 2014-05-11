@@ -32,7 +32,7 @@
             {% else %}
               {{ current_state }}</br>
               {% if ready %}
-                Was ready <span class="lead" id="last_ready_time">{{ ready }}</span>
+                Was ready <span class="lead" id="last_ready_time">{{ ready.strftime('%Y-%m-%dT%H:%M:%S Z') }}</span>
               {% endif %}
             </p>
             {% endif %}
